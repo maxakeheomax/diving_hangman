@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a4f86">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="40 метров">
+  <meta name="description" content="Дайвинг-виселица: ошибка опускает дайвера глубже, на 40 метрах темнеет и приплывает акула.">
+  <title>40 метров</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <section id="loader" class="screen-ocean">
+    <div class="card">
+      <p class="kicker">рекреационный дайвинг</p>
+      <h1>40 метров</h1>
+      <p id="loaderText" class="lead">Скачиваем океан…</p>
+      <div class="tank" id="loaderBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Загрузка снаряжения">
+        <div id="loaderFill"></div>
+      </div>
+      <p id="loaderDetail" class="fine"></p>
+      <p id="loaderError" class="error" hidden></p>
+      <button id="retryBtn" class="primary" type="button" hidden>Повторить</button>
+    </div>
+  </section>
+
+  <section id="menu" class="screen-ocean" hidden>
+    <div class="card">
+      <p class="kicker">рекреационный дайвинг</p>
+      <h1>40 метров</h1>
+      <div class="menu-art" aria-hidden="true">
+        <svg viewBox="0 0 160 120">
+          <rect width="160" height="70" fill="#8fd8f6"/>
+          <circle cx="126" cy="28" r="14" fill="#ffe08a" stroke="#17324a" stroke-width="3"/>
+          <path d="M0 68 Q20 56 40 68 T80 68 T120 68 T160 68 V120 H0 Z" fill="#1aa0d0"/>
+          <ellipse cx="78" cy="96" rx="22" ry="8" fill="#21c6b8" stroke="#17324a" stroke-width="3"/>
+          <rect x="62" y="70" width="32" height="28" rx="12" fill="#ff7a32" stroke="#17324a" stroke-width="3"/>
+          <rect x="84" y="74" width="12" height="22" rx="5" fill="#ffd447" stroke="#17324a" stroke-width="3"/>
+          <circle cx="78" cy="58" r="14" fill="#243044" stroke="#17324a" stroke-width="3"/>
+          <circle cx="80" cy="62" r="9" fill="#ffc7a3" stroke="#17324a" stroke-width="3"/>
+          <rect x="66" y="52" width="28" height="10" rx="4" fill="#17324a"/>
+          <ellipse cx="74" cy="57" rx="4" ry="3" fill="#9be7ff"/>
+          <ellipse cx="86" cy="57" rx="4" ry="3" fill="#9be7ff"/>
+        </svg>
+      </div>
+      <ul class="rules">
+        <li>Угадай слово про море, снаряжение или погружение.</li>
+        <li>Каждая ошибка — плюс пять метров.</li>
+        <li>На сорока темнеет: это предел рекреационного дайвинга. Восьмая ошибка, и из темноты выходит акула.</li>
+      </ul>
+      <button id="startBtn" class="primary" type="button">Погрузиться</button>
+      <button id="homeHintBtn" class="ghost" type="button">Как сохранить на экран</button>
+      <p id="menuStats" class="stats"></p>
+      <p id="dictNote" class="offline-note"></p>
+    </div>
+  </section>
+
+  <section id="play" hidden>
+    <header class="topbar">
+      <div class="brand">40 метров</div>
+      <div class="top-actions">
+        <button type="button" id="muteBtn" class="iconbtn" aria-pressed="false">Звук</button>
+        <button type="button" id="shoreBtn" class="iconbtn">Берег</button>
+      </div>
+    </header>
+    <div class="stage" id="stage">
+      <div id="stageMount">
+<svg id="scene" viewBox="0 0 360 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Дайвер в море">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d7f6ff"/>
+      <stop offset="100%" stop-color="#7ecff5"/>
+    </linearGradient>
+    <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6adcf2"/>
+      <stop offset="14%" stop-color="#1aa0d0"/>
+      <stop offset="30%" stop-color="#0d6eab"/>
+      <stop offset="46%" stop-color="#0a4a78"/>
+      <stop offset="62%" stop-color="#08243f"/>
+      <stop offset="78%" stop-color="#061526"/>
+      <stop offset="100%" stop-color="#02060c"/>
+    </linearGradient>
+    <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff6c8"/>
+      <stop offset="100%" stop-color="#ffd15c"/>
+    </linearGradient>
+  </defs>
+  <g id="world">
+    <rect x="0" y="0" width="360" height="150" fill="url(#skyGrad)"/>
+    <g fill="none" stroke="#ffe7a3" stroke-width="4" stroke-linecap="round">
+      <path d="M214 28 L214 16"/>
+      <path d="M232 34 L242 24"/>
+      <path d="M236 52 L248 56"/>
+      <path d="M198 34 L188 24"/>
+      <path d="M196 54 L184 58"/>
+    </g>
+    <circle cx="214" cy="48" r="22" fill="url(#sunGrad)" stroke="#17324a" stroke-width="3"/>
+    <g fill="#fff" stroke="#17324a" stroke-width="3">
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0; 16 0; 0 0" dur="14s" repeatCount="indefinite"/>
+        <ellipse cx="48" cy="42" rx="22" ry="12"/>
+        <ellipse cx="66" cy="38" rx="16" ry="11"/>
+        <ellipse cx="32" cy="44" rx="14" ry="9"/>
+      </g>
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0 0; -12 0; 0 0" dur="18s" repeatCount="indefinite"/>
+        <ellipse cx="300" cy="30" rx="18" ry="10"/>
+        <ellipse cx="316" cy="28" rx="12" ry="8"/>
+      </g>
+    </g>
+    <g fill="none" stroke="#17324a" stroke-width="3" stroke-linecap="round">
+      <path d="M250 26 q8 -10 16 0 q8 -10 16 0">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 20 4; 0 0" dur="7s" repeatCount="indefinite"/>
+      </path>
+      <path d="M120 18 q6 -8 12 0 q6 -8 12 0">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 14 -3; 0 0" dur="6s" repeatCount="indefinite"/>
+      </path>
+    </g>
+
+    <rect x="0" y="112" width="360" height="1200" fill="url(#seaGrad)"/>
+    <g fill="#ffffff" opacity="0.22">
+      <polygon points="150,118 190,250 214,118"/>
+      <polygon points="214,118 250,280 286,118"/>
+      <polygon points="120,118 146,210 168,118"/>
+    </g>
+    <path d="M0 128 Q18 112 36 128 Q54 144 72 128 Q90 112 108 128 Q126 144 144 128 Q162 112 180 128 Q198 144 216 128 Q234 112 252 128 Q270 144 288 128 Q306 112 324 128 Q342 144 360 128 V168 H0 Z" fill="#c9f6ff"/>
+
+    <g transform="translate(118 78)">
+      <animateTransform attributeName="transform" type="translate" additive="sum" values="0 0; 0 -4; 0 0" dur="3.2s" repeatCount="indefinite"/>
+      <path d="M-78 28 Q-64 58 0 58 Q64 58 78 28 Z" fill="#fffdf8" stroke="#17324a" stroke-width="3"/>
+      <path d="M-46 28 L46 28 L34 12 L-34 12 Z" fill="#ff6b4a" stroke="#17324a" stroke-width="3"/>
+      <rect x="-16" y="-18" width="26" height="32" rx="4" fill="#fffdf8" stroke="#17324a" stroke-width="3"/>
+      <rect x="-8" y="-10" width="10" height="8" rx="2" fill="#9be7ff" stroke="#17324a" stroke-width="2"/>
+      <path d="M10 -14 L42 6 L10 6 Z" fill="#ffe08a" stroke="#17324a" stroke-width="3"/>
+      <circle cx="58" cy="22" r="8" fill="none" stroke="#e23d4a" stroke-width="3"/>
+      <circle cx="58" cy="22" r="3" fill="none" stroke="#e23d4a" stroke-width="2"/>
+    </g>
+
+    <g id="reef" transform="translate(0 400)">
+      <ellipse cx="180" cy="108" rx="210" ry="36" fill="#f3d48a"/>
+      <ellipse cx="46" cy="96" rx="38" ry="22" fill="#7d8b99" stroke="#17324a" stroke-width="3"/>
+      <ellipse cx="300" cy="100" rx="46" ry="24" fill="#667584" stroke="#17324a" stroke-width="3"/>
+      <g fill="#ff8fab" stroke="#17324a" stroke-width="3">
+        <ellipse cx="70" cy="70" rx="12" ry="22"/>
+        <ellipse cx="88" cy="60" rx="11" ry="28"/>
+        <ellipse cx="106" cy="74" rx="12" ry="20"/>
+        <ellipse cx="250" cy="66" rx="13" ry="24"/>
+        <ellipse cx="268" cy="76" rx="11" ry="18"/>
+      </g>
+      <ellipse cx="160" cy="86" rx="30" ry="18" fill="#ffb703" stroke="#17324a" stroke-width="3"/>
+      <path d="M134 86 H186 M140 78 H180 M138 94 H182" fill="none" stroke="#17324a" stroke-width="2"/>
+      <g fill="none" stroke="#ff5d73" stroke-width="3" stroke-linecap="round">
+        <path d="M196 96 Q200 68 206 96"/>
+        <path d="M206 98 Q214 60 222 98"/>
+        <path d="M220 96 Q228 70 236 96"/>
+        <path d="M188 98 Q190 76 198 98"/>
+      </g>
+      <ellipse cx="214" cy="78" rx="7" ry="5" fill="#ff8a1e" stroke="#17324a" stroke-width="2"/>
+      <path d="M210 78 h8" stroke="#fff" stroke-width="2"/>
+      <g fill="none" stroke="#1f9d78" stroke-width="4" stroke-linecap="round">
+        <path d="M24 110 Q28 70 18 58"/>
+        <path d="M34 112 Q40 74 46 60"/>
+        <path d="M16 112 Q10 80 4 66"/>
+      </g>
+      <polygon points="130,100 133,91 142,91 135,85 138,75 130,81 122,75 125,85 118,91 127,91" fill="#ff7a3c" stroke="#17324a" stroke-width="2"/>
+      <g transform="translate(40 92)">
+        <ellipse cx="0" cy="0" rx="10" ry="6" fill="#e25b4a" stroke="#17324a" stroke-width="2"/>
+        <circle cx="-11" cy="-2" r="3.5" fill="#e25b4a" stroke="#17324a" stroke-width="2"/>
+        <path d="M-8 -2 Q-18 -12 -6 -6" fill="none" stroke="#17324a" stroke-width="2"/>
+        <path d="M8 -2 Q18 -12 6 -6" fill="none" stroke="#17324a" stroke-width="2"/>
+      </g>
+    </g>
+
+    <g transform="translate(0 250)">
+      <g transform="translate(250 0)">
+        <animateTransform attributeName="transform" type="translate" from="420 0" to="-160 0" begin="-3s" dur="13s" repeatCount="indefinite"/>
+        <ellipse cx="0" cy="0" rx="18" ry="9" fill="#ffd166" stroke="#17324a" stroke-width="3"/>
+        <path d="M16 -7 L30 0 L16 7 Z" fill="#ffd166" stroke="#17324a" stroke-width="3"/>
+        <path d="M-4 -8 L2 0 L-4 8" fill="none" stroke="#17324a" stroke-width="2"/>
+        <circle cx="-8" cy="-2" r="2" fill="#17324a"/>
+      </g>
+    </g>
+    <g transform="translate(0 310)">
+      <g transform="translate(70 0)">
+        <animateTransform attributeName="transform" type="translate" from="400 0" to="-140 0" begin="-8s" dur="11s" repeatCount="indefinite"/>
+        <ellipse cx="0" cy="0" rx="14" ry="8" fill="#ff7a8a" stroke="#17324a" stroke-width="3"/>
+        <path d="M12 -6 L24 0 L12 6 Z" fill="#ff7a8a" stroke="#17324a" stroke-width="3"/>
+        <circle cx="-6" cy="-1" r="1.8" fill="#17324a"/>
+      </g>
+    </g>
+    <g transform="translate(0 345)">
+      <g transform="translate(180 0)">
+        <animateTransform attributeName="transform" type="translate" from="380 0" to="-200 0" begin="-5s" dur="16s" repeatCount="indefinite"/>
+        <g fill="#3ddec8" stroke="#17324a" stroke-width="2.5">
+          <ellipse cx="0" cy="0" rx="8" ry="4"/>
+          <ellipse cx="22" cy="-6" rx="7" ry="3.5"/>
+          <ellipse cx="40" cy="4" rx="8" ry="4"/>
+          <ellipse cx="58" cy="-2" rx="6" ry="3"/>
+        </g>
+      </g>
+    </g>
+    <g transform="translate(0 290)">
+      <g transform="translate(300 0)">
+        <animateTransform attributeName="transform" type="translate" from="440 0" to="-180 0" begin="-11s" dur="22s" repeatCount="indefinite"/>
+        <ellipse cx="0" cy="6" rx="16" ry="11" fill="#2a9d8f" stroke="#17324a" stroke-width="3"/>
+        <ellipse cx="0" cy="0" rx="22" ry="8" fill="#e9c46a" stroke="#17324a" stroke-width="3"/>
+        <path d="M-18 4 Q-34 14 -20 16" fill="#2a9d8f" stroke="#17324a" stroke-width="3"/>
+        <circle cx="-12" cy="2" r="2" fill="#17324a"/>
+      </g>
+    </g>
+    <g transform="translate(0 500)">
+      <g>
+        <animateTransform attributeName="transform" type="translate" from="460 0" to="-220 0" begin="-6s" dur="26s" repeatCount="indefinite"/>
+        <ellipse cx="0" cy="0" rx="28" ry="8" fill="#4ea1c8" stroke="#17324a" stroke-width="3"/>
+        <path d="M-10 -2 Q-54 -36 -8 2" fill="#4ea1c8" stroke="#17324a" stroke-width="3"/>
+        <path d="M10 -2 Q54 -36 8 2" fill="#4ea1c8" stroke="#17324a" stroke-width="3"/>
+        <path d="M-4 6 L0 22 L4 6" fill="#4ea1c8" stroke="#17324a" stroke-width="3"/>
+        <circle cx="-16" cy="-2" r="2" fill="#17324a"/>
+      </g>
+    </g>
+    <g transform="translate(70 560)">
+      <animateTransform attributeName="transform" type="translate" additive="sum" values="0 0; 10 -16; 0 0" dur="5s" repeatCount="indefinite"/>
+      <path d="M0 10 Q20 -16 40 10 Q20 0 0 10 Z" fill="#f7c1ff" fill-opacity="0.85" stroke="#17324a" stroke-width="3"/>
+      <path d="M10 12 Q8 36 4 48" fill="none" stroke="#f7c1ff" stroke-width="2"/>
+      <path d="M20 12 Q20 40 16 52" fill="none" stroke="#f7c1ff" stroke-width="2"/>
+      <path d="M30 12 Q34 36 38 46" fill="none" stroke="#f7c1ff" stroke-width="2"/>
+    </g>
+
+    <g transform="translate(18 660)" fill="#35597a" stroke="#17324a" stroke-width="3">
+      <path d="M8 48 L34 16 H168 L214 52 Z"/>
+      <rect x="78" y="-2" width="34" height="22" fill="#4e7596"/>
+      <rect x="108" y="-24" width="8" height="28"/>
+      <circle cx="92" cy="8" r="4" fill="#9be7ff" stroke="#17324a"/>
+    </g>
+
+    <rect x="0" y="700" width="360" height="620" fill="#020814" opacity="0.5"/>
+
+    <g fill="#b9fff0">
+      <circle cx="40" cy="760" r="2">
+        <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="90" cy="820" r="1.6">
+        <animate attributeName="opacity" values="0.8;0.15;0.8" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="150" cy="790" r="2.2">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="210" cy="860" r="1.5">
+        <animate attributeName="opacity" values="1;0.2;1" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="280" cy="800" r="2">
+        <animate attributeName="opacity" values="0.25;0.85;0.25" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="320" cy="880" r="1.7">
+        <animate attributeName="opacity" values="0.7;0.1;0.7" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(250 810)">
+      <animateTransform attributeName="transform" type="translate" additive="sum" values="0 0; -30 8; 0 0" dur="8s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="18" ry="8" fill="#16324a" stroke="#7d93a8" stroke-width="2"/>
+      <path d="M16 -5 L28 0 L16 5 Z" fill="#16324a" stroke="#7d93a8" stroke-width="2"/>
+      <circle cx="-22" cy="2" r="3.5" fill="#9fffe0" stroke="none"/>
+      <path d="M-16 1 L-8 0" stroke="#9fffe0" stroke-width="2"/>
+      <circle cx="-4" cy="-2" r="1.4" fill="#d7e6f2"/>
+    </g>
+
+    <g id="diverSlot" transform="translate(148 210)">
+      <g id="diverBob">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 0 -7; 0 0" dur="2.8s" repeatCount="indefinite"/>
+        <g id="diver">
+          <ellipse cx="-16" cy="76" rx="22" ry="9" fill="#21c6b8" stroke="#17324a" stroke-width="3" transform="rotate(-18 -16 76)"/>
+          <ellipse cx="18" cy="76" rx="22" ry="9" fill="#21c6b8" stroke="#17324a" stroke-width="3" transform="rotate(18 18 76)"/>
+          <path d="M-10 30 Q-16 54 -14 68" fill="none" stroke="#17324a" stroke-width="12" stroke-linecap="round"/>
+          <path d="M-10 30 Q-16 54 -14 68" fill="none" stroke="#ff7a32" stroke-width="7" stroke-linecap="round"/>
+          <path d="M12 30 Q18 54 16 68" fill="none" stroke="#17324a" stroke-width="12" stroke-linecap="round"/>
+          <path d="M12 30 Q18 54 16 68" fill="none" stroke="#ff7a32" stroke-width="7" stroke-linecap="round"/>
+          <rect x="24" y="-16" width="24" height="52" rx="10" fill="#ffd447" stroke="#17324a" stroke-width="3"/>
+          <rect x="29" y="-24" width="14" height="12" rx="3" fill="#ffe58a" stroke="#17324a" stroke-width="3"/>
+          <path d="M36 -6 C54 -8 50 -38 8 -34" fill="none" stroke="#17324a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M-24 4 Q-54 18 -48 36" fill="none" stroke="#17324a" stroke-width="12" stroke-linecap="round"/>
+          <path d="M-24 4 Q-54 18 -48 36" fill="none" stroke="#ff7a32" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="-48" cy="38" r="6" fill="#ffc7a3" stroke="#17324a" stroke-width="3"/>
+          <path d="M24 2 Q48 16 42 32" fill="none" stroke="#17324a" stroke-width="12" stroke-linecap="round"/>
+          <path d="M24 2 Q48 16 42 32" fill="none" stroke="#ff7a32" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="42" cy="34" r="6" fill="#ffc7a3" stroke="#17324a" stroke-width="3"/>
+          <rect x="-26" y="-14" width="52" height="50" rx="20" fill="#ff7a32" stroke="#17324a" stroke-width="3"/>
+          <rect x="-14" y="-2" width="28" height="30" rx="12" fill="#ffb089" stroke="none"/>
+          <circle cx="0" cy="-46" r="26" fill="#243044" stroke="#17324a" stroke-width="3"/>
+          <circle cx="2" cy="-40" r="18" fill="#ffc7a3" stroke="#17324a" stroke-width="3"/>
+          <rect x="-20" y="-56" width="44" height="20" rx="8" fill="#17324a"/>
+          <ellipse cx="-8" cy="-46" rx="8" ry="7" fill="#9be7ff" stroke="#17324a" stroke-width="2"/>
+          <ellipse cx="12" cy="-46" rx="8" ry="7" fill="#9be7ff" stroke="#17324a" stroke-width="2"/>
+          <circle cx="-10" cy="-48" r="2" fill="#fff" stroke="none"/>
+          <circle cx="10" cy="-48" r="2" fill="#fff" stroke="none"/>
+          <circle cx="-12" cy="-32" r="3" fill="#ff9b8a" stroke="none"/>
+          <circle cx="16" cy="-32" r="3" fill="#ff9b8a" stroke="none"/>
+          <rect x="-7" y="-36" width="16" height="10" rx="4" fill="#17324a"/>
+          <circle cx="2" cy="-26" r="3" fill="#9be7ff" stroke="#17324a" stroke-width="2"/>
+        </g>
+        <g id="bubbleLayer"></g>
+      </g>
+    </g>
+
+    <g id="sharkSlot" opacity="0" transform="translate(440 860)">
+      <g id="shark">
+        <path d="M148 -4 L196 -36 L176 2 L196 38 L148 10 Z" fill="#8ea4b8" stroke="#17324a" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="86" cy="2" rx="74" ry="30" fill="#8ea4b8" stroke="#17324a" stroke-width="3"/>
+        <ellipse cx="98" cy="12" rx="42" ry="14" fill="#f7fafc" stroke="none"/>
+        <path d="M78 -22 L96 -58 L114 -16 Z" fill="#8ea4b8" stroke="#17324a" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M70 16 L46 46 L102 22 Z" fill="#7c94a8" stroke="#17324a" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="22" cy="4" rx="24" ry="16" fill="#8ea4b8" stroke="#17324a" stroke-width="3"/>
+        <circle cx="40" cy="-6" r="7" fill="#fff" stroke="#17324a" stroke-width="3"/>
+        <circle cx="42" cy="-6" r="3" fill="#17324a" stroke="none"/>
+        <circle cx="40" cy="-8" r="1.4" fill="#fff" stroke="none"/>
+        <path d="M62 -4 Q66 4 62 12" fill="none" stroke="#17324a" stroke-width="2"/>
+        <path d="M70 -2 Q74 6 70 14" fill="none" stroke="#17324a" stroke-width="2"/>
+        <path id="mouthClosed" d="M6 10 Q18 18 30 10" fill="none" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>
+        <g id="mouthOpen" opacity="0">
+          <ellipse cx="14" cy="16" rx="22" ry="16" fill="#ff5d6c" stroke="#17324a" stroke-width="3"/>
+          <path d="M4 6 L10 13 L4 16 M12 5 L16 13 L20 5 M22 7 L18 14 L28 11" fill="#fff" stroke="#17324a" stroke-width="1.4" stroke-linejoin="round"/>
+        </g>
+        <g id="snackFin" opacity="0">
+          <ellipse cx="112" cy="24" rx="12" ry="6" fill="#21c6b8" stroke="#17324a" stroke-width="3" transform="rotate(-28 112 24)"/>
+        </g>
+        <g id="amBubble" opacity="0">
+          <ellipse cx="10" cy="-62" rx="30" ry="20" fill="#fff" stroke="#17324a" stroke-width="3"/>
+          <path d="M24 -46 L36 -30 L16 -44 Z" fill="#fff" stroke="#17324a" stroke-width="3"/>
+          <text x="10" y="-56" text-anchor="middle" font-size="18" font-weight="800" fill="#17324a" stroke="none" font-family="ui-rounded, Avenir Next, sans-serif">АМ!</text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <rect id="vignette" x="0" y="0" width="360" height="520" fill="#01040a" opacity="0" pointer-events="none"/>
+</svg>
+      </div>
+      <div class="gauge" id="gauge" role="meter" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0" aria-valuetext="поверхность">
+        <div class="gauge-track">
+          <div class="gauge-clip">
+            <div class="gauge-danger"></div>
+            <div class="gauge-fill" id="gaugeFill"></div>
+          </div>
+          <div class="gauge-bead" id="gaugeBead"></div>
+        </div>
+        <div class="gauge-labels" aria-hidden="true">
+          <span>0</span>
+          <span>10</span>
+          <span>20</span>
+          <span>30</span>
+          <span class="crit">40</span>
+        </div>
+      </div>
+      <div class="computer" id="computer">
+        <div class="computer-kicker">глубина</div>
+        <div class="lcd"><span id="depthNum">0</span><small>м</small></div>
+        <div class="computer-sub" id="depthCaption">поверхность</div>
+        <div class="computer-miss" id="missLine">ошибки 0 / 8</div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="slate">
+        <div class="clip" aria-hidden="true"></div>
+        <div id="categoryLabel" class="category"></div>
+        <p id="clue" class="clue"></p>
+        <div id="blanks" class="blanks" aria-live="off"></div>
+      </div>
+      <div id="keyboard" class="keyboard"></div>
+      <p class="desk-hint">На компьютере подходят и клавиши</p>
+    </div>
+  </section>
+
+  <section id="onboard" class="screen-ocean" hidden>
+    <div class="card onboard-card" role="dialog" aria-modal="true" aria-labelledby="onboardTitle">
+      <p class="kicker" id="onboardKicker">как сохранить игру</p>
+      <h2 id="onboardTitle" tabindex="-1"></h2>
+      <div id="onboardArt" class="onboard-art"></div>
+      <div id="onboardChoices" class="onboard-choices" hidden></div>
+      <p id="onboardText" class="onboard-text"></p>
+      <p id="onboardNote" class="fine" hidden></p>
+      <button id="onboardCopy" class="ghost" type="button" hidden>Скопировать адрес</button>
+      <input id="onboardUrl" class="onboard-url" type="text" readonly hidden>
+      <div class="onboard-nav">
+        <button id="onboardBack" class="ghost" type="button" hidden>Назад</button>
+        <button id="onboardNext" class="primary" type="button">Дальше</button>
+      </div>
+      <button id="onboardAlt" class="linkbtn" type="button" hidden></button>
+      <button id="onboardSkip" class="linkbtn" type="button">Играть без иконки</button>
+      <button id="onboardHide" class="linkbtn" type="button" hidden>Больше не показывать</button>
+    </div>
+  </section>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+      <h2 id="overlayTitle"></h2>
+      <p id="overlayText" class="lead"></p>
+      <p id="overlayAnswer" class="answer"></p>
+      <p id="overlayClue" class="clue"></p>
+      <button type="button" id="againBtn" class="primary">Ещё погружение</button>
+      <button type="button" id="menuBtn" class="ghost">На берег</button>
+    </div>
+  </div>
+  <p id="live" class="sr-only" aria-live="polite"></p>
+  <noscript>Нужен JavaScript, чтобы надеть ласты.</noscript>
+  <script src="js/words.js"></script>
+  <script src="js/onboard.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/boot.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#1287b5"/>
+  <circle cx="390" cy="110" r="46" fill="#ffe08a" stroke="#17324a" stroke-width="12"/>
+  <path d="M0 300 Q64 260 128 300 T256 300 T384 300 T512 300 V512 H0 Z" fill="#0b6e96"/>
+  <ellipse cx="250" cy="360" rx="70" ry="28" fill="#21c6b8" stroke="#17324a" stroke-width="12"/>
+  <rect x="196" y="250" width="108" height="120" rx="40" fill="#ff7a32" stroke="#17324a" stroke-width="12"/>
+  <rect x="250" y="268" width="46" height="96" rx="20" fill="#ffd447" stroke="#17324a" stroke-width="12"/>
+  <circle cx="250" cy="196" r="62" fill="#243044" stroke="#17324a" stroke-width="12"/>
+  <circle cx="256" cy="210" r="42" fill="#ffc7a3" stroke="#17324a" stroke-width="12"/>
+  <rect x="206" y="176" width="100" height="46" rx="18" fill="#17324a"/>
+  <ellipse cx="230" cy="198" rx="16" ry="14" fill="#9be7ff" stroke="#17324a" stroke-width="8"/>
+  <ellipse cx="278" cy="198" rx="16" ry="14" fill="#9be7ff" stroke="#17324a" stroke-width="8"/>
+  <text x="256" y="470" text-anchor="middle" font-size="72" font-weight="800" fill="#fff" font-family="ui-rounded, Avenir Next, sans-serif">40</text>
+</svg>
